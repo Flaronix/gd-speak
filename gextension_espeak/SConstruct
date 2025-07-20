@@ -1,0 +1,45 @@
+
+import os
+
+env = SConscript("godot-cpp/SConstruct", arguments=ARGUMENTS)
+
+env.Append(CPPPATH=["#espeak-ng-src/src/include"])
+env.Append(LIBPATH=["#espeak-ng-src/src/.libs", "bin/windows"])
+
+# Añadimos la librería espeak-ng directamente.
+env.Append(LIBS=["espeak-ng"])
+
+# Platform-specific LINKFLAGS (rpath for Linux, no rpath for Android/Windows)
+# The godot-cpp SConstruct should handle most of the toolchain setup.
+if env["platform"] == "linux":
+    env.Append(LINKFLAGS=["-Wl,-rpath,'$ORIGIN'"])
+elif env["platform"] == "windows":
+    # No rpath needed for Windows DLLs
+    pass
+elif env["platform"] == "android":
+    # Android handles library loading differently, no rpath needed here
+    pass
+
+# Le decimos a SCons dónde está nuestro código fuente.
+sources = Glob("src/*.cpp")
+
+# Determine the target name and output directory based on platform and architecture
+target_name = "../bin/libespeakgodotextension"
+if env["platform"] == "android":
+    android_arch = ARGUMENTS.get("android_arch")
+    if not android_arch:
+        print("Error: android_arch must be specified for Android platform.")
+        Exit(1)
+    # Android libraries go into a platform/architecture specific subdirectory
+    target_name = os.path.join("..", "bin", "android", android_arch, "libespeakgodotextension")
+elif env["platform"] == "windows":
+    # SCons will automatically add the .dll extension for Windows
+    target_name = "../bin/libespeakgodotextension"
+
+# Creamos la librería compartida.
+library = env.SharedLibrary(
+    target=target_name,
+    source=sources,
+)
+
+Default(library)

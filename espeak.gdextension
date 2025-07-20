@@ -1,0 +1,8 @@
+[configuration]
+
+entry_symbol = "espeak_library_init"
+compatibility_minimum = "4.4"
+
+[libraries]
+
+linux.64 = "res://bin/libespeakgodotextension.so"
