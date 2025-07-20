@@ -5,7 +5,5 @@ It includes a test project to try it out, using the following syntax:
 
 
 ````
-```
 var raw_audio_data = espeak_node.synthesize(text)
-```
 ````
