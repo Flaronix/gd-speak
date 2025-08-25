@@ -6,3 +6,4 @@ compatibility_minimum = "4.4"
 [libraries]
 
 linux.64 = "res://bin/libespeakgodotextension.so"
+windows.x86_64 = "res://bin/libespeakgodotextension.dll"

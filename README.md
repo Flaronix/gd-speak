@@ -1,12 +1,12 @@
 # eSpeak-NG for Godot
 
-## Purpose Notes
-
 - Forked from [eSpeak-NG-for-Godot-4](https://github.com/soykhaler/eSpeak-NG-for-Godot-4)
 	- Thanks to [soykhaler](https://github.com/soykhaler) for the original code!
-- Tested on Windows; Orignal project has complete mapping only for Linux
-- (WIP: testing if this is neccesary) Uses a rebuilt [eSpeak-NG 1.52](https://github.com/espeak-ng/espeak-ng/releases/tag/1.52.0)
-- Significant changes to the original `eSpeakNode`, made for personal preference and usage in my Godot project
+	- Tested on Windows; Orignal project has complete mapping for Linux only
+	- (WIP) Removed the demo project from the original repo
+- (WIP) File restructuring for organization and for usage as a Godot plugin
+- (WIP) Significant changes to the original `eSpeakNode`, made for personal preference and usage in my Godot project
+- (WIP) Uses a rebuilt [eSpeak-NG 1.52](https://github.com/espeak-ng/espeak-ng/releases/tag/1.52.0)
 
 ## 1. How to Update eSpeak-NG Changes and Recompile the GDExtension
 
