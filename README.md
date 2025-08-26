@@ -1,6 +1,6 @@
-# Overview
+# GD Speak
 
-`gd-speak` is a GDExtension that acts as a bridge between Godot and the `espeak-ng` library. It handles speech synthesis and delivers audio data to Godot in a format that can played directly from memory.
+GD Speak is a GDExtension that acts as a bridge between Godot and the `espeak-ng` library. It handles speech synthesis and delivers audio data to Godot in a format that can played directly from memory.
 
 ## Changes from Original Repository
 
@@ -9,7 +9,7 @@ Originally forked from [eSpeak-NG-for-Godot-4](https://github.com/soykhaler/eSpe
 - Established Windows compatibility
 	- Note this repo *only* contains the files needed for building and using the gdextension on Windows
 	- Rebuilt [eSpeak-NG 1.52](https://github.com/espeak-ng/espeak-ng/releases/tag/1.52.0) with MSVC to add `libespeak-ng.dll` (previously missing dependency of `libespeakgodotextension.dll`)
-        - I believe this is the only change I needed for [eSpeak-NG-for-Godot-4](https://github.com/soykhaler/eSpeak-NG-for-Godot-4) work on Windows
+        - I believe this is the only change I needed for [eSpeak-NG-for-Godot-4](https://github.com/soykhaler/eSpeak-NG-for-Godot-4) to work on Windows
 	- Rebuilt the GDExtension for a mutually compatible `libespeakgodotextension.dll`
 - Removed the demo Godot project from the original repo
 - File restructuring for organization into a Godot addon folder (`addons/gd-speak`)

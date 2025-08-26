@@ -1,3 +1,7 @@
 godot-cpp/
 espeak-ng-src/
 .sconsign.dblite
+addons/gd-speak/bin/windows/libespeakgodotextension.exp
+addons/gd-speak/bin/windows/libespeakgodotextension.lib
+src/espeak_node.windows.template_debug.x86_64.obj
+src/register_types.windows.template_debug.x86_64.obj
