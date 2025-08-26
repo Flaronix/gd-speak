@@ -1,6 +1,6 @@
 # GD Speak
 
-GD Speak is a GDExtension that acts as a bridge between Godot and the `espeak-ng` library. It handles speech synthesis and delivers audio data to Godot in a format that can played directly from memory.
+GD Speak is a GDExtension that acts as a bridge between Godot and [eSpeak-NG](https://github.com/espeak-ng/espeak-ng). It handles text-to-speech synthesis and delivers audio data to Godot in a format that can played directly from memory.
 
 ## Changes from Original Repository
 
@@ -16,7 +16,7 @@ Originally forked from [eSpeak-NG-for-Godot-4](https://github.com/soykhaler/eSpe
     - Allows for simply copying `addons/gd-speak` to your project's `addons` folder to use in other Godot 4.4 projects
 - Significant changes to the original `eSpeakNode`, made for personal preference and usage in my Godot project
     - Renamed `ESpeakNode` to `ESpeaker`
-    - Print statements now require `ESpeak.debug_print` to be enabled (`false` by default)
+    - Print statements now require `ESpeaker.debug_print` to be enabled per `ESpeaker` instance (`false` by default)
 
 Thanks again to [@soykhaler](https://github.com/soykhaler) for the original project design and repository!
 
