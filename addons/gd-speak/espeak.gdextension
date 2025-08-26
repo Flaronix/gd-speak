@@ -1,0 +1,9 @@
+[configuration]
+
+entry_symbol = "espeak_library_init"
+compatibility_minimum = "4.4"
+
+[libraries]
+
+; linux.64 = "res://addons/gd-speak/bin/linux/libespeakgodotextension.so" ; Linux compatability broken from original repo. See README.md
+windows.x86_64 = "res://addons/gd-speak/bin/windows/libespeakgodotextension.dll"
