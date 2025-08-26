@@ -13,7 +13,7 @@ void initialize_espeak_module(ModuleInitializationLevel p_level) {
         return;
     }
 
-    ClassDB::register_class<ESpeakNode>();
+    ClassDB::register_class<ESpeaker>();
 }
 
 void uninitialize_espeak_module(ModuleInitializationLevel p_level) {

@@ -14,7 +14,9 @@ Originally forked from [eSpeak-NG-for-Godot-4](https://github.com/soykhaler/eSpe
 - Removed the demo Godot project from the original repo
 - File restructuring for organization into a Godot addon folder (`addons/gd-speak`)
     - Allows for simply copying `addons/gd-speak` to your project's `addons` folder to use in other Godot 4.4 projects
-- (WIP) Significant changes to the original `eSpeakNode`, made for personal preference and usage in my Godot project
+- Significant changes to the original `eSpeakNode`, made for personal preference and usage in my Godot project
+    - Renamed `ESpeakNode` to `ESpeaker`
+    - Print statements now require `ESpeak.debug_print` to be enabled (`false` by default)
 
 Thanks again to [@soykhaler](https://github.com/soykhaler) for the original project design and repository!
 
@@ -54,19 +56,19 @@ The eSpeak-NG integration in your Godot project is achieved via a C++ **GDExtens
 
 *   **`libespeakgodotextension.so` (Compiled Library - C++):**
     *   It's the core of the integration. It contains the C++ code that communicates directly with the `espeak-ng` library.
-    *   It defines an `ESpeakNode` class that inherits from Godot's `Node`, making it accessible in your Godot scenes.
+    *   It defines an `ESpeaker` class that inherits from Godot's `Node`, making it accessible in your Godot scenes.
 
-*   **`ESpeakNode` (C++ Class):**
-    *   **Initialization (`ESpeakNode::ESpeakNode()`):** When an `ESpeakNode` instance is created in Godot, its constructor initializes the `espeak-ng` library. It tells `espeak-ng` where to find its data files (`espeak-ng-data`) and sets up a callback to receive audio data.
-    *   **Speech Synthesis (`ESpeakNode::synthesize(text)`):** This method takes a Godot `String` (the text to speak), converts it to a format `espeak-ng` understands, and asks `espeak-ng` to synthesize the audio.
+*   **`ESpeaker` (C++ Class):**
+    *   **Initialization (`ESpeaker::ESpeaker()`):** When an `ESpeaker` instance is created in Godot, its constructor initializes the `espeak-ng` library. It tells `espeak-ng` where to find its data files (`espeak-ng-data`) and sets up a callback to receive audio data.
+    *   **Speech Synthesis (`ESpeaker::synthesize(text)`):** This method takes a Godot `String` (the text to speak), converts it to a format `espeak-ng` understands, and asks `espeak-ng` to synthesize the audio.
         *   `espeak-ng` doesn't return audio immediately; instead, it repeatedly calls a callback function (`synth_callback`) as it generates audio fragments.
         *   The `synthesize` method waits for `espeak-ng` to finish generating all audio (`espeak_Synchronize()`) and collects all audio fragments into a `PackedByteArray`.
         *   **Important:** This method returns *only raw audio data* (16-bit PCM, mono, 22050 Hz), without the WAV header.
-    *   **Language Change (`ESpeakNode::set_language(lang_code)`):** This method takes a language code (e.g., "en", "es") and tells `espeak-ng` to change the voice used for synthesis.
+    *   **Language Change (`ESpeaker::set_language(lang_code)`):** This method takes a language code (e.g., "en", "es") and tells `espeak-ng` to change the voice used for synthesis.
 
 *   **`main.gd` (GDScript Script):**
     *   This script is the controller for your Godot UI.
-    *   It gets references to `LineEdit`, `AudioStreamPlayer`, and your `ESpeakNode` nodes.
+    *   It gets references to `LineEdit`, `AudioStreamPlayer`, and your `ESpeaker` nodes.
     *   When the user enters text and presses the "speak" button:
         *   It calls `espeak_node.synthesize(text)` to get the raw audio data.
         *   It creates a Godot `AudioStreamWAV`.

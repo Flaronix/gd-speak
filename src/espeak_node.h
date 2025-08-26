@@ -3,21 +3,21 @@
 
 #include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/variant/packed_byte_array.hpp>
-#include <godot_cpp/classes/os.hpp> // Might not be used anymore
-#include <godot_cpp/classes/project_settings.hpp> // Using for Godot relative file path in espeak_node.cpp
+// #include <godot_cpp/classes/os.hpp>
+#include <godot_cpp/classes/project_settings.hpp> // Using for contextual relative file path in `espeak_node.cpp` -> `ESpeaker()`
 #include <godot_cpp/variant/utility_functions.hpp>
 
 namespace godot {
 
-class ESpeakNode : public Node {
-    GDCLASS(ESpeakNode, Node)
+class ESpeaker : public Node {
+    GDCLASS(ESpeaker, Node)
 
 protected:
     static void _bind_methods();
 
 public:
-    ESpeakNode();
-    ~ESpeakNode();
+    ESpeaker();
+    ~ESpeaker();
 
     PackedByteArray synthesize(const String &text);
     void set_language(const String &p_lang_code);
