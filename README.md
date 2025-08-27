@@ -14,9 +14,12 @@ Originally forked from [eSpeak-NG-for-Godot-4](https://github.com/soykhaler/eSpe
 - Removed the demo Godot project from the original repo
 - File restructuring for organization into a Godot addon folder (`addons/gd-speak`)
     - Allows for simply copying `addons/gd-speak` to your project's `addons` folder to use in other Godot 4.4 projects
-- Significant changes to the original `eSpeakNode`, made for personal preference and usage in my Godot project
-    - Renamed `ESpeakNode` to `ESpeaker`
+- Changes to the original `eSpeakNode` made for personal preference and usage in my Godot project
+    - [Compatability Breaking] Renamed `ESpeakNode` to `ESpeaker`
     - Print statements now require `ESpeaker.debug_print` to be enabled per `ESpeaker` instance (`false` by default)
+- Added a `TextSpeaker` class via `TextSpeaker.gd` for a simple GDScript interface with `ESpeaker`
+    - Creates its own `ESpeaker` and pre-configured `AudioStreamPlayer`
+    - Usage of this is optional as the `ESpeaker` node can be used directly
 
 Thanks again to [@soykhaler](https://github.com/soykhaler) for the original project design and repository!
 
