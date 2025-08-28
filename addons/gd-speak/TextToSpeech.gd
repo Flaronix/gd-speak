@@ -1,7 +1,10 @@
-class_name TextSpeaker extends Node
+@icon('res://addons/gd-speak/TTS.svg')
+class_name TextToSpeech extends ESpeaker
+## A GDScript interface for ESpeaker.
 
-# -- Nodes --
-var espeaker := ESpeaker.new()
+
+# -- Node --
+## The audio player used by [method speak] to play the constructed AudioStreamWAV
 var audio_player := AudioStreamPlayer.new()
 
 # -- Settings --
@@ -25,6 +28,7 @@ func _init(language: String = language_code) -> void:
 
 #region [ TTS ] 
 
+## Synthesizes the given [code]text[/code] into TTS audio and plays it.
 func speak(text: String = '') -> void:
 	if text.is_empty():
 		return
@@ -32,18 +36,22 @@ func speak(text: String = '') -> void:
 		push_warning('TextSpeaker\'s AudioStreamPlayer Must be inside the scene tree to play audio.')
 		return
 	
-	var raw_audio_data: PackedByteArray = espeaker.synthesize(text)
+	var raw_audio_data: PackedByteArray = synthesize(text) # ESpeaker.synthesize
 	if not raw_audio_data.is_empty():
 		audio_player.stream.data = raw_audio_data
 		audio_player.play()
 	else:
-		push_warning('No data from `espeaker.synthesize(text)`')
+		push_warning('No data from `synthesize(text)`')
 
-static func create_tts_stream() -> AudioStreamWAV:
+## Creates an AudioStreamWAV with the correct configuration needed to play eSpeak-NG audio data.
+## Optionally accepts [code]audio_data[/code] returned from [method synthesize].
+static func create_tts_stream(audio_data: PackedByteArray = []) -> AudioStreamWAV:
 	var stream_wav = AudioStreamWAV.new()
 	stream_wav.format = AudioStreamWAV.FORMAT_16_BITS
 	stream_wav.mix_rate = 22050
 	stream_wav.stereo = false
+	if not audio_data.is_empty():
+		stream_wav.data = audio_data
 	return stream_wav
 
 #endregion
@@ -52,6 +60,6 @@ static func create_tts_stream() -> AudioStreamWAV:
 
 func set_language_code(new_value: String) -> void:
 	language_code = new_value
-	espeaker.set_language(language_code)
+	set_language(language_code) # ESpeaker.set_language
 
 #endregion
