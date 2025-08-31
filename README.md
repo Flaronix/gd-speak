@@ -7,27 +7,33 @@ GD Speak is a GDExtension that acts as a bridge between Godot and [eSpeak-NG](ht
 Originally forked from [eSpeak-NG-for-Godot-4](https://github.com/soykhaler/eSpeak-NG-for-Godot-4) with intent to fix errors I was getting in Godot when trying to use the plugin on Windows. Big thanks to [@soykhaler](https://github.com/soykhaler) for the original code, this saved me significant time on my personal Godot project 😊
 
 - Established Windows compatibility
-	- Note this repo *only* contains the files needed for building and using the gdextension on Windows
-	- Rebuilt [eSpeak-NG 1.52](https://github.com/espeak-ng/espeak-ng/releases/tag/1.52.0) with MSVC to add `libespeak-ng.dll` (previously missing dependency of `libespeakgodotextension.dll`)
-        - I believe this is the only change I needed for [eSpeak-NG-for-Godot-4](https://github.com/soykhaler/eSpeak-NG-for-Godot-4) to work on Windows
-	- Rebuilt the GDExtension for a mutually compatible `libespeakgodotextension.dll`
+	- Note this repo *only* contains the files needed for building and using the GDExtension on Windows, however I plan to add compatibility for Linux and Mac later on
+	- Rebuilt [eSpeak-NG 1.52](https://github.com/espeak-ng/espeak-ng/releases/tag/1.52.0) (with MSVC) to add `libespeak-ng.dll`
+        - I believe this was a previously missing dependency of `libespeakgodotextension.dll` for usage on Windows
+- Rebuilt the GDExtension itself for a `libespeakgodotextension.dll` that includes my changes (see below)
 - Removed the demo Godot project from the original repo
-- File restructuring for organization into a Godot addon folder (`addons/gd-speak`)
-    - Allows for simply copying `addons/gd-speak` to your project's `addons` folder to use in other Godot 4.4 projects
+- File restructuring for organization into a single Godot addon folder (`addons/gd-speak`)
+    - Allows for simply copying `addons/gd-speak` into your Godot 4.4 projects
 - Changes to the original `eSpeakNode` made for personal preference and usage in my Godot project
     - [Compatability Breaking] Renamed `ESpeakNode` to `ESpeaker`
     - Print statements now require `ESpeaker.debug_print` to be enabled per `ESpeaker` instance (`false` by default)
 - Added `TextToSpeech` class via `TextToSpeech.gd` for a simple GDScript interface (extends `ESpeaker`)
     - Creates its own pre-configured `AudioStreamPlayer`
-    - Usage of this is optional as the `ESpeaker` node can be used directly    
+    - Allows for quick and simple text-to-speech in 2 lines:
+        ```gdscript
+        var tts := TextToSpeech.new()
+        tts.speak("Hello, world!")
+        ```
+        - **Recommended:** Add it to the node tree first to avoid instancing everytime (`@onready var tts: TextToSpeech = $TextToSpeech`)
+    - Usage of this class is optional as the `ESpeaker` node can be used directly, but requires manual setup of an `AudioStreamPlayer` and `AudioStreamWAV` instance
 
 Thanks again to [@soykhaler](https://github.com/soykhaler) for the original project design and repository!
 
 ## 1. How to Update eSpeak-NG Changes and Recompile the GDExtension
 
-If you modify the eSpeak-NG source code (within `espeak-ng-src`, which is not included here but can be cloned from [eSpeak-NG 1.52](https://github.com/espeak-ng/espeak-ng/releases/tag/1.52.0)) or the GDExtension code (`src`), you need to recompile the GDExtension for changes to reflect in your Godot project.
+If you modify and rebuild eSpeak-NG from its source code (`espeak-ng-src`) or the GDExtension code (`src`), you will need to recompile the GDExtension for changes to reflect in your Godot project. Note that the GDExtension expects the eSpeak-NG source to be in `espeak-ng-src`, a folder that is not included here. Instead, clone/download the source from [eSpeak-NG 1.52](https://github.com/espeak-ng/espeak-ng/releases/tag/1.52.0), rename the repo's root folder to `espeak-ng-src`, and place in this project's root folder.
 
-Follow these steps:
+To build the GDExtension:
 
 1.  **Navigate to the GDExtension directory:**
     ```bash
@@ -46,7 +52,7 @@ Follow these steps:
 
 **No, eSpeak-NG does not need to be installed on your operating system.**
 
-The compiled GDExtension `libespeakgodotextension.dll` depends on the `libespeak-ng.dll` library and its data files (`addons/gd-speak/espeak-ng-data`). If the data folder is missing, eSpeak-NG has a fallback to look for the data files on your system. This allows the extension to work anyways if you have previously installed eSpeak-NG with its `.msi` installer (see release files for [eSpeak-NG 1.52](https://github.com/espeak-ng/espeak-ng/releases/tag/1.52.0)). Take note of this, as users of your Godot project may not have eSpeak-NG installed on their system. This can result in the gdextension working fine for you, but not for your users. Make sure the data exists at `addons/gd-speak/espeak-ng-data` to avoid this issue.
+The compiled GDExtension `libespeakgodotextension.dll` depends on the `libespeak-ng.dll` library and its data files (`addons/gd-speak/espeak-ng-data`). If the `espeak-ng-data` folder is missing, eSpeak-NG has a fallback to look for the data on your system. This allows the extension to work anyways if you have previously installed eSpeak-NG, such as with its `.msi` installer (see release files for [eSpeak-NG 1.52](https://github.com/espeak-ng/espeak-ng/releases/tag/1.52.0)). Take note of this, as users of your Godot project will likely not have eSpeak-NG installed on their system. This can result in the GDExtension working fine for you, but not for your users. Make sure the data exists at `addons/gd-speak/espeak-ng-data` to avoid this issue. You can also uninstall eSpeak-NG from your system to ensure the data folder being used is the one in your Godot project.
 
 As long as `addons/gd-speak/espeak-ng-data` properly exists, your project is **self-contained** regarding eSpeak-NG. You can distribute your Godot project, and eSpeak-NG will work without requiring the end-user to have eSpeak-NG pre-installed on their system.
 
@@ -66,7 +72,7 @@ The eSpeak-NG integration in your Godot project is achieved via a C++ **GDExtens
     *   It is a dependency of `libespeakgodotextension.dll` to connect with `espeak-ng`
 
 *   **`espeak-ng-data` (Data Files):**
-    *   This folder contains the data files needed by `espeak-ng` to work without being installed on your system
+    *   This folder contains the data files needed by `espeak-ng` to work without being installed on your system (see #2 above)
 
 *   **`ESpeaker` (C++ Class):**
     *   **Initialization (`ESpeaker::ESpeaker()`):** When an `ESpeaker` instance is created in Godot, its constructor initializes the `espeak-ng` library. It tells `espeak-ng` where to find its data files (`espeak-ng-data`) and sets up a callback to receive audio data
@@ -76,12 +82,12 @@ The eSpeak-NG integration in your Godot project is achieved via a C++ **GDExtens
         *   **Important:** This method returns *only raw audio data* (16-bit PCM, mono, 22050 Hz), without the WAV header.
     *   **Language Change (`ESpeaker::set_language(lang_code)`):** This method takes a language code (e.g., "en", "es") and tells `espeak-ng` to change the voice used for synthesis
 
-*   **`TextSpeaker.gd` (GDScript Class):**
-    *   This class that extends from `ESpeaker`, providing a GDScript interface for `ESpeaker`
+*   **`TextToSpeech.gd` (GDScript Class):**
+    *   This class that extends from `ESpeaker`, providing a simple GDScript interface
     *   Methods:
-        *   `speak()` to process passed `text` and play it through its AudioStreamPlayer
-        *   `create_tts_stream()` to create a new pre-configured AudioStreamWAV, optionally accepting synthesized audio data
+        *   `speak()` to process passed `text` and play it through its `AudioStreamPlayer`
+        *   `create_tts_stream()` to create a new pre-configured `AudioStreamWAV`, optionally accepting synthesized audio data
     *   Properties:
-        *   `debug_print` (bool) to enable/disable printing debug messages
         *   `language_code` (String) to set the voice (and language) used for synthesis
             *   List of codes found in the `identifier` column [here](https://github.com/espeak-ng/espeak-ng/blob/master/docs/languages.md)
+        *   `debug_print` (bool) to enable/disable printing debug messages. Note this is a property of `ESpeaker`, so you won't see it coded in `TextToSpeech.gd`
