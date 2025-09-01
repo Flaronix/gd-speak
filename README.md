@@ -22,6 +22,7 @@ Originally forked from [eSpeak-NG-for-Godot-4](https://github.com/soykhaler/eSpe
     - Allows for quick and simple text-to-speech in 2 lines:
         ```gdscript
         var tts := TextToSpeech.new()
+        add_child(tts) # Required by the AudioStreamPlayer to play audio 
         tts.speak("Hello, world!")
         ```
         - **Recommended:** Add it to the node tree first to avoid instancing everytime (`@onready var tts: TextToSpeech = $TextToSpeech`)
