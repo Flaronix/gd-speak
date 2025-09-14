@@ -29,6 +29,7 @@ func _init(language: String = language_code) -> void:
 #region [ TTS ] 
 
 ## Synthesizes the given [code]text[/code] into TTS audio and plays it.
+## Can be awaited to stop execution until the audio has finished playing.
 func speak(text: String = '') -> void:
 	if text.is_empty():
 		return
@@ -40,6 +41,7 @@ func speak(text: String = '') -> void:
 	if not raw_audio_data.is_empty():
 		audio_player.stream.data = raw_audio_data
 		audio_player.play()
+		await audio_player.finished
 	else:
 		push_warning('No data from `synthesize(text)`')
 
