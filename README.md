@@ -19,7 +19,7 @@ Originally forked from [eSpeak-NG-for-Godot-4](https://github.com/soykhaler/eSpe
     - Print statements now require `ESpeaker.debug_print` to be enabled per `ESpeaker` instance (`false` by default)
 - Added `TextToSpeech` class via `TextToSpeech.gd` for a simple GDScript interface (extends `ESpeaker`)
     - Creates its own pre-configured `AudioStreamPlayer`
-    - Allows for quick and simple text-to-speech in 2 lines:
+    - Allows for quick and simple text-to-speech in a few lines:
         ```gdscript
         var tts := TextToSpeech.new()
         add_child(tts) # Required by the AudioStreamPlayer to play audio 
