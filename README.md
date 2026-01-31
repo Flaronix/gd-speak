@@ -13,7 +13,7 @@ Originally forked from [eSpeak-NG-for-Godot-4](https://github.com/soykhaler/eSpe
 - Rebuilt the GDExtension itself for a `libespeakgodotextension.dll` that includes my changes (see below)
 - Removed the demo Godot project from the original repo
 - File restructuring for organization into a single Godot addon folder (`addons/gd-speak`)
-    - Allows for simply copying `addons/gd-speak` into your Godot 4.4 projects
+    - Allows for simply copying `addons/gd-speak` into your Godot 4.x projects
 - Changes to the original `eSpeakNode` made for personal preference and usage in my Godot project
     - [Compatability Breaking] Renamed `ESpeakNode` to `ESpeaker`
     - Print statements now require `ESpeaker.debug_print` to be enabled per `ESpeaker` instance (`false` by default)
